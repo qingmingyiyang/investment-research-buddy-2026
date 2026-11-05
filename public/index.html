@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f0">
+  <title>投资 X Buddy · 研究工作台</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">跳到工作台</a>
+  <header class="masthead">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">X</span>
+      <div><span class="brand-name">投资 X Buddy</span><span class="brand-en" lang="en">RESEARCH WORKSPACE</span></div>
+    </div>
+    <span class="mode"><span aria-hidden="true"></span>只读研究</span>
+  </header>
+  <div class="layout">
+    <aside class="rail" aria-label="研究侧栏">
+      <div class="rail-heading"><h2>研究线程</h2><button class="secondary compact" type="button" id="new-thread">＋ 新建</button></div>
+      <nav id="threads" aria-label="已有线程"></nav>
+      <div class="rail-heading memory-heading"><h2>长期记忆</h2><span class="subtle">本机</span></div>
+      <div id="memories"></div>
+      <p class="rail-note">线程、证据与研究记忆保存在当前浏览器。</p>
+    </aside>
+    <main id="workspace" tabindex="-1">
+      <div class="workspace-heading">
+        <p class="eyebrow">行情研究 / MARKET EVIDENCE</p>
+        <h1>投资研究工作台</h1>
+        <p class="intro">从一个研究目标出发，审批取证计划，再沿证据复核每个判断。</p>
+      </div>
+      <p id="notice" class="notice" role="status" hidden></p>
+      <section class="panel" aria-labelledby="goal-heading">
+        <div class="section-heading"><span class="number">01</span><h2 id="goal-heading">研究目标</h2></div>
+        <form id="research-form">
+          <div class="form-grid">
+            <div>
+              <label for="objective">你想验证什么？</label>
+              <textarea id="objective" name="objective" rows="3" required maxlength="600" placeholder="例如：比较最近两个交易日的收盘价和成交量，核对变化幅度。"></textarea>
+            </div>
+            <div>
+              <label for="ticker">股票代码</label>
+              <input id="ticker" name="ticker" type="text" value="600519" required minlength="6" maxlength="6" inputmode="numeric" pattern="(?:000|001|002|003|300|301|600|601|603|605|688|689)[0-9]{3}" autocomplete="off" spellcheck="false" aria-describedby="ticker-help">
+              <small id="ticker-help">填写六位沪深 A 股代码，如 600519。支持主板、创业板和科创板的常见代码前缀。</small>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" id="plan-button">生成研究计划</button>
+            <button type="button" class="secondary" id="example-button">试用示例</button>
+          </div>
+          <label class="choice"><input id="use-model" type="checkbox"> 尝试模型规划</label>
+          <small>默认使用规则规划。部署配置模型服务后，可将主题类别与公开股票代码发送给模型。请勿填写持仓或身份信息。</small>
+        </form>
+      </section>
+      <div id="active-thread" hidden>
+        <section class="panel" aria-labelledby="plan-heading">
+          <div class="section-heading"><span class="number">02</span><h2 id="plan-heading">计划与执行</h2><span class="status" id="task-status"></span></div>
+          <p class="research-question" id="active-goal"></p>
+          <p class="subtle" id="plan-origin"></p>
+          <div id="clarification" class="notice" hidden></div>
+          <ol class="plan-list" id="proposals" aria-label="研究计划"></ol>
+          <ol class="steps" id="steps" aria-label="执行步骤"></ol>
+          <div id="task-error" class="notice problem" role="status" hidden></div>
+          <div id="source-errors" aria-label="失败的行情来源" hidden></div>
+          <div id="task-actions" class="form-actions"></div>
+          <details class="tools">
+            <summary>工具权限与预算</summary>
+            <ul>
+              <li><strong>计划生成</strong> · 可选模型调用，每次规划最多 1 次。</li>
+              <li><strong>行情取证</strong> · 只读访问公开数据，审批后执行，每个线程最多 3 次。</li>
+              <li><strong>证据计算</strong> · 在浏览器中按字段、单位和期间比较。停止后保留已完成检查点。</li>
+            </ul>
+          </details>
+        </section>
+        <section class="panel" id="evidence-panel" aria-labelledby="evidence-heading" hidden>
+          <div class="section-heading"><span class="number">03</span><h2 id="evidence-heading">证据</h2><span id="evidence-count" class="status"></span></div>
+          <p class="subtle" id="source-summary"></p>
+          <div id="evidence"></div>
+        </section>
+        <section class="panel" id="artifact-panel" aria-labelledby="artifact-heading" hidden>
+          <div class="section-heading"><span class="number">04</span><h2 id="artifact-heading">研究产物</h2></div>
+          <div id="report"></div>
+          <div id="report-actions" class="form-actions"></div>
+        </section>
+        <section class="panel" aria-labelledby="trace-heading">
+          <div class="section-heading"><span class="number">05</span><h2 id="trace-heading">运行记录</h2></div>
+          <dl class="stats" id="stats"></dl>
+          <p id="checkpoint" class="subtle"></p>
+          <details>
+            <summary>压缩上下文</summary>
+            <p id="context" class="context"></p>
+          </details>
+          <details>
+            <summary>运行日志</summary>
+            <ol id="logs" class="logs"></ol>
+          </details>
+        </section>
+      </div>
+      <footer>数据用于复核历史行情与研究假设。应用范围为只读研究。</footer>
+    </main>
+  </div>
+</body>
+</html>
+
