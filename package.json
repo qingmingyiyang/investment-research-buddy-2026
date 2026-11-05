@@ -1,0 +1,14 @@
+{
+  "name": "investment-research-buddy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --use-env-proxy server/serve.mjs",
+    "bundle": "esbuild worker/index.mjs --bundle --platform=neutral --format=esm --loader:.html=text --loader:.css=text --loader:.js=text --outfile=dist/server/index.js"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
+
